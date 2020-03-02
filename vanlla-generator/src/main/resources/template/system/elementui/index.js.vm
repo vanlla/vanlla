@@ -1,0 +1,33 @@
+          // ${comments}
+          {
+            path: '${classname}',
+            meta: '${comments}管理',
+            component: resolve => require(['@/views/admin/container'], resolve),
+            children: [
+              {
+                path: '/',
+                name: '${classname}',
+                meta: '${comments}列表',
+                component: resolve =>
+                  require(['@/views/admin/systemManage/${classname}'], resolve)
+              },
+              {
+                path: '${classname}Detail',
+                name: '${classname}Detail',
+                meta: '${comments}详情',
+                component: resolve =>
+                  require([
+                    '@/views/admin/systemManage/${classname}/${classname}Detail'
+                  ], resolve)
+              },
+              {
+                path: 'add${className}',
+                name: 'add${className}',
+                meta: '新增${comments}',
+                component: resolve =>
+                  require([
+                    '@/views/admin/systemManage/${classname}/add${className}'
+                  ], resolve)
+              }
+            ]
+          }

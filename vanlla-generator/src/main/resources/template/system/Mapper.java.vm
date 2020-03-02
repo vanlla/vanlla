@@ -1,0 +1,21 @@
+package ${package}.${moduleName}.mapper;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${package}.${moduleName}.entity.${className}Entity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Map;
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+public interface ${className}Mapper extends BaseMapper<${className}Entity> {
+
+    IPage<${className}Entity> search(Page<${className}Entity> page, @Param("param") Map<String, Object> param);
+	
+}

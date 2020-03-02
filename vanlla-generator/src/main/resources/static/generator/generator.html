@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="plugins/elementui/theme-chalk/index.css">
+</head>
+<body>
+<!-- 界面 -->
+<div id="app">
+    <el-tabs v-model="activeName">
+
+        <!-- 选择数据表 -->
+        <el-tab-pane label="数据库表" name="choiceTable">
+            <p>
+                <el-input placeholder="请输入内容" v-model="keyword" size="medium" style="width: 180px" clearable></el-input>
+                <el-button type="primary" size="medium" @click="handleSearch">查询</el-button>
+            </p>
+            <p>
+                <el-table :data="res.tableList" border style="width: 100%" v-loading="loading.tableList" element-loading-text="拼命加载中" >
+                    <el-table-column prop="tableName" label="名称"></el-table-column>
+                    <el-table-column prop="tableComment" label="说明"></el-table-column>
+                    <el-table-column prop="engine" label="类型" width="180"></el-table-column>
+                    <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+                    <el-table-column label="操作" width="78">
+                        <template scope="scope">
+                            <el-button size="small" @click="handleChoiceTable(scope.row)">选择</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </p>
+            <p class="pagination">
+                <el-pagination background layout="prev, pager, next" @current-change="handleCurrentChange" :page-count="res.page.totalPage"> </el-pagination>
+            </p>
+        </el-tab-pane>
+
+        <!-- 编辑生成规则 -->
+        <el-tab-pane label="编辑规则" name="editRule">
+            <el-form :inline="true" class="demo-form-inline">
+                <el-form-item label="包名">
+                    <el-input v-model="genInfo.table.pkgName" placeholder="请输入包名" size="small" style="width: 270px;"></el-input>
+                </el-form-item>
+                <el-form-item label="模块名">
+                    <el-input v-model="genInfo.table.moduleName" placeholder="请输入模块名" size="small" style="width: 100px;"></el-input>
+                </el-form-item>
+                <el-form-item label="类名">
+                    <el-input v-model="genInfo.table.clsName" placeholder="请输入类名" size="small" style="width: 100px;"></el-input>
+                </el-form-item>
+                <el-form-item label="说明">
+                    <el-input v-model="genInfo.table.comments" placeholder="请输入中文说明" size="small" style="width: 100px;"></el-input>
+                </el-form-item>
+                <el-form-item label="主键">
+                    <el-select v-model="genInfo.table.pk" placeholder="请选择" size="small">
+                        <el-option v-for="item in genInfo.columnList" :key="item.columnName" :label="item.columnName" :value="item.columnName">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <p style="float: right; margin: 0;">
+                    <el-button size="small" type="primary" @click="handleSave">保存</el-button>
+                    <el-button size="small" type="danger" @click="handleRest">重置</el-button>
+                </p>
+            </el-form>
+            <el-table :data="genInfo.columnList" v-loading="loading.columnList" element-loading-text="拼命加载中" stripe style="width: 100%">
+                <el-table-column prop="columnName" label="字段" width="150"></el-table-column>
+                <el-table-column label="说明" width="150">
+                    <template scope="scope">
+                        <el-input v-model="scope.row.columnComment" placeholder="请输入说明" size="small"></el-input>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="dataTypeWithNum" label="数据库类型" width="120"></el-table-column>
+                <el-table-column label="Java类型" width="122">
+                    <template scope="scope">
+                        <el-select v-model="scope.row.javaType" placeholder="请选择" size="small">
+                            <el-option v-for="item in options.javaType" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </template>
+                </el-table-column>
+                <el-table-column label="Java属性" width="150">
+                    <template scope="scope">
+                        <el-input v-model="scope.row.javaName" placeholder="请输入Java属性" size="small"></el-input>
+                    </template>
+                </el-table-column>
+                <!--<el-table-column label="主键" width="95">-->
+                <!--<template scope="scope">-->
+                <!--<el-switch v-model="scope.row.pk" on-color="#13ce66" off-color="#ff4949" on-text="是" off-text="否"></el-switch>-->
+                <!--</template>-->
+                <!--</el-table-column>-->
+                <el-table-column label="校验规则" width="200">
+                    <template scope="scope">
+                        <el-checkbox-group v-model="scope.row.rules" size="mini">
+                            <el-checkbox label="非空" :disabled="scope.row.disableds.notNull" border></el-checkbox>
+                            <el-checkbox label="长度" :disabled="scope.row.disableds.matchLength" border></el-checkbox>
+                        </el-checkbox-group>
+                    </template>
+                </el-table-column>
+                <!--<el-table-column label="可空">-->
+                <!--<template scope="scope">-->
+                <!--<el-switch v-model="scope.row.nullAble" on-color="#13ce66" off-color="#ff4949" on-text="是" off-text="否"></el-switch>-->
+                <!--</template>-->
+                <!--</el-table-column>-->
+                <el-table-column label="插入校验">
+                    <template scope="scope">
+                        <el-switch v-model="scope.row.insert" :disabled="scope.row.disableds.insert"  on-color="#13ce66" off-color="#ff4949" on-text="是" off-text="否"></el-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column label="修改校验">
+                    <template scope="scope">
+                        <el-switch v-model="scope.row.update" :disabled="scope.row.disableds.update"  on-color="#13ce66" off-color="#ff4949" on-text="是" off-text="否"></el-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column label="查询参数" width="95">
+                    <template scope="scope">
+                        <el-switch v-model="scope.row.where" :disabled="scope.row.disableds.where" on-color="#13ce66" off-color="#ff4949" on-text="是" off-text="否"></el-switch>
+                    </template>
+                </el-table-column>
+                <el-table-column label="查询方式" width="108">
+                    <template scope="scope">
+                        <el-select v-model="scope.row.whereType" placeholder="请选择" size="small" :disabled="scope.row.disableds.where">
+                            <el-option v-for="item in options.whereType" :key="item.value" :label="item.label" :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </template>
+                </el-table-column>
+                <el-table-column label="Example" width="130">
+                    <template scope="scope">
+                        <el-input v-model="scope.row.example" placeholder="请输入Example" size="small" :disabled="scope.row.disableExample"></el-input>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-tab-pane>
+
+        <!-- 导出 -->
+        <el-tab-pane label="导出生成" name="exportCode">
+            <p style="text-align: center;padding-top: 100px;">
+                <el-button size="small" type="primary" @click="handleGenerator">仅下载</el-button>
+                <el-button size="small" type="primary" @click="handleSaveAndGenerator">保存&下载</el-button>
+            </p>
+        </el-tab-pane>
+    </el-tabs>
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="plugins/elementui/vue.js"></script>
+<!-- import JavaScript -->
+<script src="plugins/elementui/index.js"></script>
+
+<script src="libs/jquery.min.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                activeName: 'choiceTable',
+                loading:{
+                    tableList: false,
+                    columnList: false,
+                    export: false
+                },
+                res:{
+                    page:{
+                        totalPage: 1,
+                        currPage: 1
+                    },
+                    tableList: [],
+                    columnList: []
+                },
+                keyword: '',
+                choiceTable:{},
+                options:{
+                    javaType:[
+                        { value: 'String', label: 'String'},
+                        { value: 'Integer', label: 'Integer'},
+                        { value: 'Date', label: 'Date'},
+                        { value: 'Long', label: 'Long'},
+                        { value: 'BigDecimal', label: 'BigDecimal'},
+                        { value: 'Boolean', label: 'Boolean'}
+                    ],
+                    whereType:[
+                        { value: '=', label: '='},
+                        { value: 'Like', label: 'Like'}
+                    ]
+                },
+                genInfo:{
+                    table: {
+                        tableName: '',
+                        pkgName: '',
+                        clsName: '',
+                        comments: '',
+                        pk:''
+                    },
+                    columnList: [
+                    ]
+                }
+            }
+        },
+        mounted () {
+            this.getDataList()
+        },
+        methods: {
+            // 获取数据列表
+            getDataList () {
+                this.loading.tableList = true;
+                $.ajax({
+                    url:'../sys/generator/list?_search=false&tableName='+this.keyword+'&limit=10&page='+this.res.page.currPage,
+                    async:false,
+                    success: function(result){
+                        this.loading.tableList = false;
+                        if(result && result.code == 0){
+                            this.res.page = {
+                                currPage: result.page.currPage,
+                                totalPage: result.page.totalPage
+                            };
+                            this.res.tableList = result.page.list;
+                        }else{
+                            this.$message.error('系统异常，' + result.msg);
+                        }
+                    }.bind(this),
+                    error: function () {
+                        this.loading.tableList = false;
+                        this.$message.error('系统异常');
+                    }.bind(this)
+                });
+            },
+            // 改变页
+            handleCurrentChange(pageNum) {
+                this.res.page.currPage = pageNum;
+                this.getDataList ();
+            },
+            // 搜索
+            handleSearch() {
+                this.res.page.currPage = 1;
+                this.getDataList ();
+            },
+            // 选择
+            handleChoiceTable(row) {
+                this.activeName = 'editRule';
+                var tableName = row.tableName.toLocaleLowerCase();
+                if(tableName.indexOf('tb_')==0){
+                    tableName = tableName.substr(3);
+                }
+                var clsName = this.toCamelCase(tableName);
+                var moduleName = tableName.indexOf('_')>-1?tableName.split('_')[0]:'other';
+                this.genInfo.table = {
+                    tableName: row.tableName,
+                    pkgName: 'com.github.vanlla',
+                    moduleName: moduleName,
+                    clsName: clsName.substr(0, 1).toUpperCase() + clsName.substr(1),
+                    comments: row.tableComment,
+                    pk:''
+                };
+                if(localStorage.getItem(this.genInfo.table.tableName)!=null){
+                    this.genInfo = JSON.parse(localStorage.getItem(this.genInfo.table.tableName));
+                    this.$message.success('从本地保存加载');
+                }else{
+                    this.getColumns();
+                }
+            },
+            // 获取字段
+            getColumns() {
+                this.loading.columnList = true;
+                $.ajax({
+                    url:'../sys/generator/' + this.genInfo.table.tableName + '/columns',
+                    async:false,
+                    success: function(result){
+                        this.loading.columnList = false;
+                        if(result && result.code == 0){
+                            var list = result.columns;
+                            //处理数据
+                            for(var i=0;i<list.length;i++){
+                                list[i].dataTypeWithNum=list[i].maxLength?list[i].dataType+'('+list[i].maxLength+')':list[i].dataType;
+                                switch(list[i].dataType.toLowerCase()){
+                                    case 'timestamp':
+                                    case 'date':
+                                    case 'datetime':
+                                        list[i].javaType='Date';
+                                        list[i].example = '2018-08-08';
+                                        break;
+
+                                    case 'int':
+                                    case 'bigint':
+                                    case 'number':
+                                    case 'smallint':
+                                    case 'decimal':
+                                        if(list[i].numericScale){
+                                            list[i].javaType='Double';
+                                            list[i].maxLength=list[i].numericPrecision+','+list[i].numericScale
+                                        }else if(list[i].numericPrecision<=10){
+                                            list[i].javaType='Integer';
+                                            list[i].maxLength=list[i].numericPrecision
+                                        }else{
+                                            list[i].javaType='Long';
+                                            list[i].maxLength=list[i].numericPrecision
+                                        }
+                                        list[i].example = '1';
+                                        break;
+
+                                    case 'tinyint':
+                                        list[i].javaType='Boolean';
+                                        list[i].example = 'true';
+                                        break;
+
+                                    default :
+                                        list[i].javaType='String';
+                                        if(list[i].columnKey=='PRI') {   //主键
+                                            list[i].example = '1000001';
+                                        }else{
+                                            list[i].example = '测试'+list[i].columnComment+'001';
+                                        }
+                                };
+                                list[i].insert = false;
+                                list[i].update = false;
+                                list[i].where = true;
+                                list[i].rules = [];
+                                list[i].disableds = {
+                                    notNull: false,
+                                    matchLength: false,
+                                    insert: false,
+                                    update: false,
+                                    where: false,
+                                };
+                                var col = list[i].columnName.toLowerCase();
+                                /** where **/
+                                if(list[i].columnKey=='PRI'){   //主键
+                                    list[i].where = false;
+                                }
+                                if(col.lastIndexOf('_id')>-1
+                                    || col.indexOf('ate_time')>-1
+                                    || col.indexOf('ate_date')>-1
+                                    || col.indexOf('ate_by')>-1
+                                    || col.indexOf('ate_dt')>-1
+                                    || col.indexOf('ate_user')>-1
+                                    || col.indexOf('is_delete')>-1
+                                    || col.indexOf('del_flag')>-1
+                                    || col.indexOf('date_version')>-1){
+                                    list[i].where = false;
+                                }
+                                /** rules **/
+                                if(list[i].columnKey=='PRI'){   //主键
+                                    list[i].disableds.notNull = true;
+                                    list[i].disableds.matchLength = true;
+                                }else{
+                                    if(list[i].javaType!='String'){
+                                        list[i].disableds.matchLength = true;
+                                    }else{
+                                        list[i].rules.push('长度');
+                                    }
+                                    if(list[i].nullAble!='YES'){
+                                        list[i].rules.push('非空');
+                                    }
+                                }
+                                /** insert **/
+                                if(list[i].columnKey=='PRI'){   //主键
+                                    list[i].disableds.insert = true;
+                                }else{
+                                    if(list[i].rules.length>0){
+                                        list[i].insert = true;
+                                    }
+                                }
+                                /** update **/
+                                if(list[i].columnKey=='PRI'){   //主键
+                                    list[i].disableds.update = true;
+                                }else{
+                                    if(list[i].rules.length>0){
+                                        list[i].update = true;
+                                    }
+                                }
+                                /** PK **/
+                                if(list[i].columnKey=='PRI') {   //主键
+                                    this.genInfo.table.pk = list[i].columnName;
+                                }
+
+//                                if(col=='remarks'){
+//                                    list[i].where = true;
+//
+//                                }
+//                                if(col=='update_by' || col=='update_date'){
+//                                    list[i].update = true;
+//                                }
+//                                if(col=='update_by' || col=='create_by'){
+//                                    list[i].javaName+='.id';
+//                                }
+//                                if(col=='app_id'){
+//                                    list[i].example = 'app001';
+//                                }
+                                if(list[i].where == true){
+                                    if(list[i].javaType=='String'){
+                                        list[i].whereType = 'like';
+                                    }else{
+                                        list[i].whereType = '=';
+                                    }
+                                }
+//                                if(col=='id' || col=='create_date' || col=='update_date' || col=='update_by' || col=='create_by' || col=='remarks'){
+//                                    list[i].example = '';
+//                                    list[i].disableExample = true;
+//                                }else{
+//                                    list[i].disableExample = false;
+//                                }
+//                                list[i].nullAble = list[i].nullAble=='YES'?true:false;
+//                                if(!list[i].whereType){
+//                                    list[i].whereType = '';
+//                                }
+                                list[i].javaName = this.toCamelCase(list[i].columnName);
+                                if(list[i].columnComment==''&&list[i].columnKey=='PRI'){
+                                    list[i].columnComment='ID';
+                                }
+                            }
+                            this.genInfo.columnList = list;
+                        }else{
+                            this.$message.error('系统异常，' + result.msg);
+                        }
+                    }.bind(this),
+                    error: function () {
+                        this.loading.columnList = false;
+                        this.$message.error('系统异常');
+                    }.bind(this)
+                });
+            },
+            //驼峰命名
+            toCamelCase(s){
+                var arr = s.split('_');
+                s = arr[0].toLowerCase();
+                for(var i=1;i<arr.length;i++){
+                    s += arr[i].substr(0,1).toUpperCase() + arr[i].substr(1).toLowerCase();
+                }
+                return s;
+            },
+            //保存
+            handleSave(){
+                localStorage.setItem(this.genInfo.table.tableName, JSON.stringify(this.genInfo));
+                this.$message.success('保存本地成功');
+            },
+            //重置
+            handleRest(){
+                this.getColumns();
+                this.$message.success('重新加载成功');
+                localStorage.removeItem(this.genInfo.table.tableName);
+            },
+            handleGenerator(){
+                var form=$("<form>");//定义一个form表单
+                form.attr("style","display:none");
+                form.attr("target","");
+                form.attr("method","post");
+                form.attr("action","../sys/generator/code/system");
+                var input1=$("<input>");
+                input1.attr("type","hidden");
+                input1.attr("name","genInfo");
+                input1.attr("value",JSON.stringify(this.genInfo));
+                $("body").append(form);//将表单放置在web中
+                form.append(input1);
+                form.submit();//提交
+            },
+            handleSaveAndGenerator(){
+                this.handleGenerator();
+                this.handleSave();
+            }
+        }
+    })
+</script>
+
+<style>
+    p.pagination{
+        text-align: center;
+    }
+</style>
+</html>

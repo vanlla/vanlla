@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.vanlla.system.mapper.RoleMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.github.vanlla.system.entity.RoleEntity" id="roleMap">
+        <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleDescription" column="role_description"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="search" resultType="com.github.vanlla.system.entity.RoleEntity">
+        select * from tb_role where 1=1
+        <if test=" param.roleName != null and param.roleName != '' ">
+            and role_name like concat('%',#{param.roleName},'%')
+        </if>
+
+        <if test=" param.roleDescription != null and param.roleDescription != '' ">
+            and role_description like concat('%',#{param.roleDescription},'%')
+        </if>
+
+        <if test=" param.status != null ">
+            and status =#{param.status}
+        </if>
+    </select>
+
+    <select id="listAll" resultType="com.github.vanlla.system.entity.RoleEntity">
+        select role_id,role_name from tb_role order by role_name
+    </select>
+
+</mapper>

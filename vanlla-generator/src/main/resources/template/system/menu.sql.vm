@@ -1,0 +1,18 @@
+-- 菜单SQL
+INSERT INTO `tb_menu`( `parent_id`, `type`, `name`, `url`, `perms`, `title`, `icon`, `is_leaf`, `order_no`, `rw_access`, `is_sysmenu`)
+    VALUES ( 289, 1, '${comments}', '/system/${classname}/list', '', '${classname}', NULL, 0, 3, NULL, NULL);
+
+
+-- 按钮父菜单ID
+set @parentId = @@identity;
+
+-- 菜单对应按钮SQL
+
+INSERT INTO `tb_menu`(`parent_id`, `type`, `name`, `url`, `perms`, `title`, `icon`, `is_leaf`, `order_no`, `rw_access`, `is_sysmenu`)
+    SELECT  @parentId, 2, '查看', NULL, '${moduleName}:${pathName}:list', NULL, NULL, 1, NULL, '1', NULL;
+INSERT INTO `tb_menu`(`parent_id`, `type`, `name`, `url`, `perms`, `title`, `icon`, `is_leaf`, `order_no`, `rw_access`, `is_sysmenu`)
+    SELECT  @parentId, 2, '新增', NULL, '${moduleName}:${pathName}:save', NULL, NULL, 1, NULL, '1', NULL;
+INSERT INTO `tb_menu`(`parent_id`, `type`, `name`, `url`, `perms`, `title`, `icon`, `is_leaf`, `order_no`, `rw_access`, `is_sysmenu`)
+    SELECT  @parentId, 2, '修改', NULL, '${moduleName}:${pathName}:update', NULL, NULL, 1, NULL, '1', NULL;
+INSERT INTO `tb_menu`(`parent_id`, `type`, `name`, `url`, `perms`, `title`, `icon`, `is_leaf`, `order_no`, `rw_access`, `is_sysmenu`)
+    SELECT  @parentId, 2, '删除', NULL, '${moduleName}:${pathName}:delete', NULL, NULL, 1, NULL, '1', NULL;

@@ -1,0 +1,42 @@
+server:
+  servlet:
+    context-path: /api
+
+web:
+  upload-path: D:/tmp/
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/vblog?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: "123456"
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/,classpath:/views/,classpath:/public/,file:${web.upload-path}
+
+  redis:
+    timeout: 6000         # 连接超时时长（毫秒）
+    lettuce:
+      pool:
+        max-wait: -1      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接
+  session:
+    store-type: REDIS
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+
+--- # dev
+spring:
+  profiles: dev
+server:
+  port: 8080
+
+--- # test
+spring:
+  profiles: test
+server:
+  port: 8081

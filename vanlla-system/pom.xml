@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.github.vanlla</groupId>
+        <artifactId>vanlla-dependencies</artifactId>
+        <version>1.0.2</version>
+        <relativePath>../vanlla-dependencies/pom.xml</relativePath>
+    </parent>
+    <artifactId>vanlla-system</artifactId>
+    <version>1.0.2</version>
+    <packaging>jar</packaging>
+
+    <name>vanlla-system</name>
+    <url>https://github.com/vanlla/vanlla</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.vanlla</groupId>
+            <artifactId>vanlla-core</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vanlla</groupId>
+            <artifactId>vanlla-shiro</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>

@@ -1,0 +1,142 @@
+<template>
+    <div class="container">
+        <div class="container_view">
+            <!-- 搜索框 -->
+            <div class="table-search">
+              #if($searchColumn)
+                  <dy-input :selected.sync="form.${searchColumn.attrname}"
+                            placeholder="${searchColumn.comments}"
+                            @keyup.enter="searchList"></dy-input>
+              #else
+                  <dy-input :selected.sync="form.id"
+                            placeholder="ID"
+                            @keyup.enter="searchList"></dy-input>
+              #end
+                  <dy-button type="primary"
+                             class="marginL10"
+                             @click="searchList">搜索</dy-button>
+                <dy-button class="btn-r"
+                           @click="#[[$router.push({ name: 'add]]#${className}#[[' })]]#">新增${comments}</dy-button>
+            </div>
+            <!-- 列表开始 -->
+            <!--  viewFramework-item-mg-top  -->
+            <div class="marginT20">
+                <div class="dy-table"
+                     v-loading="loading">
+                    <table border="0"
+                           cellspacing="10"
+                           cellpadding="10">
+                        <tr>
+#foreach ($column in $columns)
+#if($column.attrname != $pk.attrname && $column.attrname != $del.attrname)
+                            <th width="100">${column.comments}</th>
+#end
+#end
+                            <th width="50">操作</th>
+                        </tr>
+                        <tr class="dy-table_tips system_dy-table_tips"
+                            v-if="dataTable.length < 1">
+                            <td>暂无数据</td>
+                        </tr>
+                        <tr class="dy-table_row"
+                            v-for="(item, index) in dataTable"
+                            :key="index">
+#foreach ($column in $columns)
+#if($column.attrname != $pk.attrname && $column.attrname != $del.attrname)
+                            <td>{{item.${column.attrname}}}</td>
+#end
+#end
+                            <td class="edit-now">
+                                <div class="admin-operate">
+                                    <i class="iconfont icon-operation-group"></i>
+                                    <div class="edit_inline">
+                                        <router-link :to="{ name: '${classname}Detail' ,query: { id: item.id, type: 'compile'}}"
+                                                     tag="a"
+                                                     href="javascript:;">编辑</router-link>
+                                        <router-link :to="{name: '${classname}Detail' ,query: { id: item.id, type: 'detail'}}"
+                                                     tag="a"
+                                                     href="javascript:;">查看</router-link>
+                                        <a href="javascript:;"
+                                           @click="del(item.id,  #if($searchColumn)item.${searchColumn.attrname}#else item.id#end)">删除</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <dy-pagination type="primary"
+                               :currentPage.sync="pager.currentPage"
+                               :sizes="pager.sizes"
+                               :size.sync="pager.pageSize"
+                               :total="pager.total"
+                               :total-page="Math.ceil(pager.total/pager.pageSize)"
+                               layout="total, sizes, prev, pager, next"
+                               @size-change="handleSizeChange"
+                               @current-change="handleCurrentChange">
+                </dy-pagination>
+            </div>
+            <!-- 监控表结束 -->
+        </div>
+    </div>
+
+</template>
+
+<script>
+import systemManage from '../api' // 引入API
+import { tableBase } from '@/utils/systemCom.js' // 引入列表的公共方法
+
+export default {
+  data() {
+    return {
+      dataTable: [],
+      loading: false,
+      pager: {
+        pageSize: 10,
+        currentPage: 1,
+        total: 0,
+        sizes: [10, 20, 50]
+      },
+      form: {
+#if($searchColumn)
+        ${searchColumn.attrname}: '',
+#else
+        id: '',
+#end
+        page: 1,
+        limit: 10
+      } // 查询参数
+    }
+  },
+  mixins: [tableBase],
+  methods: {
+    // 获取列表信息
+    loadDataTable(params) {
+      this.loading = true
+      systemManage.query${className}List(params).then(response => {
+        if (response.status === 200 && response.data.code === 0) {
+          this.pager.currentPage = response.data.data.currPage
+          this.pager.total = response.data.data.totalCount
+          this.pager.pageSize = response.data.data.pageSize
+          let dataList = response.data.data.list
+          this.dataTable = dataList
+          // 数据加载完成结束loding
+          this.loading = false
+        } else {
+          this.alertMsg(response.data.msg, 'danger', 1000)
+        }
+      })
+    },
+    // 删除
+    delData(params) {
+      systemManage.delete${className}(params).then(response => {
+        if (response.data.code === 0) {
+          this.alertMsg('删除成功!', 'success', 1000)
+          this.init(this.form)
+        } else {
+          this.alertMsg(response.data.msg, 'danger', 1000)
+        }
+      })
+    }
+  }
+}
+</script>

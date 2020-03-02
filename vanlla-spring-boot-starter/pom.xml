@@ -6,7 +6,7 @@
     <parent>
         <artifactId>vanlla-dependencies</artifactId>
         <groupId>com.github.vanlla</groupId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
         <relativePath>../vanlla-dependencies/pom.xml</relativePath>
     </parent>
 
@@ -35,25 +35,25 @@
         <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-system</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
 
         <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-job</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
 
         <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-generator</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
 
        <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-redis</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
        </dependency>
 
     </dependencies>

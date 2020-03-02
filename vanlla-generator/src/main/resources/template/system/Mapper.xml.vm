@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${package}.${moduleName}.mapper.${className}Mapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="${package}.${moduleName}.entity.${className}Entity" id="${classname}Map">
+        #foreach($column in $columns)
+            <result property="${column.attrname}" column="${column.columnName}"/>
+        #end
+    </resultMap>
+
+    <select id="search" resultType="${package}.${moduleName}.entity.${className}Entity">
+        select * from ${tableName} where 1=1
+        #foreach ($column in $columns)
+            #if($column.where==true)
+                #if($column.javaType=="String")
+                    <if test=" param.${column.attrname} != null and param.${column.attrname} != '' ">
+                #else
+                    <if test=" param.${column.attrname} != null ">
+                #end
+                #if($column.whereType=="like")
+                    and ${column.columnName} like concat('%',#{param.${column.attrname}},'%')
+                #else
+                    and ${column.columnName} =#{param.${column.attrname}}
+                #end
+                    </if>
+            #end
+        #end
+    </select>
+
+</mapper>

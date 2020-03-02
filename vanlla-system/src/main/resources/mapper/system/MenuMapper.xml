@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.vanlla.system.mapper.MenuMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.github.vanlla.system.entity.MenuEntity" id="menuMap">
+        <result property="menuId" column="menu_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="url" column="url"/>
+        <result property="perms" column="perms"/>
+        <result property="icon" column="icon"/>
+        <result property="isLeaf" column="is_leaf"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="rwAccess" column="rw_access"/>
+        <result property="isSysmenu" column="is_sysmenu"/>
+    </resultMap>
+
+    <select id="search" resultType="com.github.vanlla.system.entity.MenuEntity">
+        select * from tb_menu where 1=1
+        <if test=" param.type != null ">
+            and type =#{param.type}
+        </if>
+        <if test=" param.name != null and param.name != '' ">
+            and name like concat('%',#{param.name},'%')
+        </if>
+        <if test=" param.url != null and param.url != '' ">
+            and url like concat('%',#{param.url},'%')
+        </if>
+        <if test=" param.perms != null and param.perms != '' ">
+            and perms like concat('%',#{param.perms},'%')
+        </if>
+        <if test=" param.icon != null and param.icon != '' ">
+            and icon like concat('%',#{param.icon},'%')
+        </if>
+        <if test=" param.isLeaf != null and param.isLeaf != '' ">
+            and is_leaf like concat('%',#{param.isLeaf},'%')
+        </if>
+        <if test=" param.orderNo != null ">
+            and order_no =#{param.orderNo}
+        </if>
+        <if test=" param.rwAccess != null and param.rwAccess != '' ">
+            and rw_access like concat('%',#{param.rwAccess},'%')
+        </if>
+        <if test=" param.isSysmenu != null and param.isSysmenu != '' ">
+            and is_sysmenu like concat('%',#{param.isSysmenu},'%')
+        </if>
+    </select>
+
+    <select id="findByType" resultType="com.github.vanlla.system.vo.MenuNode">
+        select menu_id as id,name from tb_menu where type =#{type}
+    </select>
+
+    <select id="findByParentId" resultType="com.github.vanlla.system.vo.MenuNode">
+         select menu_id as id ,name ,is_leaf from tb_menu where parent_id =#{parentId} order by order_no asc
+    </select>
+    <select id="findMenuInfoById" resultType="com.github.vanlla.system.vo.MenuVO"
+            parameterType="java.lang.Long">
+        select t.*,p.name as parent_name from tb_menu t left join  tb_menu p on t.parent_id = p.menu_id where t.menu_id=#{id}
+
+    </select>
+    <select id="findMenuByUserId" resultType="com.github.vanlla.system.entity.MenuEntity">
+        SELECT DISTINCT
+            m.menu_id,
+            m.NAME,
+            m.parent_id,
+            m.type,
+            m.url,
+            m.title,
+            m.icon,
+            m.perms
+        FROM
+            tb_user_role_ref u
+            LEFT JOIN tb_role_menu_ref r ON u.role_id = r.role_id
+            LEFT JOIN tb_menu m ON m.menu_id = r.menu_id
+        WHERE
+            u.user_id = #{id} AND m.type != 2
+    </select>
+    <select id="findPermsByUserId" resultType="java.lang.String">
+         SELECT DISTINCT
+            m.perms
+        FROM
+            tb_user_role_ref u
+            LEFT JOIN tb_role_menu_ref r ON u.role_id = r.role_id
+            LEFT JOIN tb_menu m ON m.menu_id = r.menu_id
+        WHERE
+            u.user_id = #{id} AND m.type =2
+    </select>
+
+</mapper>

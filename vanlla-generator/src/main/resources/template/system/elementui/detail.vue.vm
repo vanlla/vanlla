@@ -1,0 +1,169 @@
+#set($_D="$")
+<template>
+  <div class="container">
+    <div class="container_view">
+      <div class="systemCommon-title">
+        <h1 v-if="detailTrue">${comments}详情</h1>
+        <h1 v-else>${comments}编辑</h1>
+      </div>
+      <div class="systemCommon-button">
+        <div v-if="detailTrue">
+          <dy-button @click="returnlink">
+            <i class="iconfont icon-angle-double-left"></i>返回</dy-button>
+          <dy-button @click="gotocompile()"
+            v-if="detailTrue">编辑</dy-button>
+        </div>
+        <div v-if="!detailTrue">
+          <dy-button type="primary"
+            @click="updateDetail()">保存</dy-button>
+          <dy-button @click="returnlink">取消</dy-button>
+        </div>
+      </div>
+      <div class="systemCommon-content">
+#foreach($column in $columns)#if($column.attrname != $pk.attrname)
+        <div class="label-item">
+          <label class="label-name"
+            :class="{'import-label-name':!detailTrue}">
+#if($column.nullAble != 'YES')
+              <span class="require">*</span>
+#end
+              ${column.comments}：
+            </label>
+          <div class="label-input-item">
+            <label v-if="detailTrue">{{${column.attrname}}}</label>
+            <div v-if="!detailTrue">
+#if($column.javaType == 'Date')
+              <el-date-picker
+                v-model="${column.attrname}"
+                type="date"
+                placeholder="请选择${column.comments}"/>
+#else
+              <dy-input type="input"
+#foreach ($rule in $column.rules)#if($rule == "长度")
+                maxlength="${column.maxLength}"
+#end#end
+                placeholder="请填写${column.comments}名称"
+                :selected.sync="${column.attrname}">
+              </dy-input>
+#end
+            </div>
+          </div>
+        </div>
+#end#end
+      </div>
+      <div class="systemCommon-button">
+        <div v-if="detailTrue">
+          <dy-button @click="returnlink">
+            <i class="iconfont icon-angle-double-left"></i>返回</dy-button>
+          <dy-button @click="gotocompile()"
+            v-if="detailTrue">编辑</dy-button>
+        </div>
+        <div v-if="!detailTrue">
+          <dy-button type="primary"
+            @click="updateDetail()">保存</dy-button>
+          <dy-button @click="returnlink">取消</dy-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import systemManage from '../api' // 引入API
+import { treeDataTranslate } from '@/utils/index'
+import { isInteger } from '@/utils/common'
+
+export default {
+  data() {
+    return {
+      detailTrue: true,
+      dataID: '',
+#foreach($column in $columns)#if($column.attrname != $pk.attrname)
+      ${column.attrname}: ''#if(!$column.lastOne),#end // ${column.comments}
+#end#end
+    }
+  },
+  methods: {
+    init() {
+      this.dataID = this.${_D}route.query.id // 角色ID
+      let pageType = this.${_D}route.query.type
+      // 判断该页面是处于查看详情还是编辑状态--自定义:detail:详情页  compile:编辑状态页面
+      if (pageType === 'detail') {
+        this.detailTrue = true
+      } else {
+        this.detailTrue = false
+      }
+    },
+    returnlink: function() {
+      this.${_D}router.push({
+        name: '${classname}'
+      })
+    },
+    gotocompile() {
+      this.${_D}router.push({
+        name: '${classname}Detail',
+        query: { id: this.dataID, type: 'compile' }
+      })
+    },
+    // 获取详情信息
+    getDetail: function() {
+      let self = this
+      systemManage.get${className}Detail(this.dataID).then(response => {
+        if (response.status === 200 && response.data.code === 0) {
+          var data = response.data.data
+          self.dataID = data.${pk.attrname}
+#foreach($column in $columns)#if($column.attrname != $pk.attrname)
+          self.${column.attrname} = data.${column.attrname}
+#end#end
+        } else {
+          self.alertMsg(response.data.msg, 'danger', 1000)
+        }
+      })
+    },
+    // 保存编辑状态上做的修改
+    updateDetail() {
+      let self = this
+      var params = {
+        id: this.dataID,
+#foreach($column in $columns)#if($column.attrname != $pk.attrname)
+        ${column.attrname}: self.${column.attrname}#if(!$column.lastOne),#end // ${column.comments}
+#end#end
+      }
+      let input = /^[\s]*$/
+#foreach($column in $columns)#foreach ($rule in $column.rules)#if($rule == "非空")
+      if (input.test(self.${column.attrname})) {
+        self.alertMsg('请输入${column.comments}', 'warning', 1000)
+        return false
+      }
+#end#end#if($column.isNumber && $column.attrname != $pk.attrname)
+      if (!isInteger(parseInt(self.${column.attrname}))) {
+        self.alertMsg('${column.comments}必须为数字', 'warning', 1000)
+        return false
+      }
+#end#end
+      systemManage.update${className}Detail(params).then(response => {
+        if (response.status === 200 && response.data.code === 0) {
+          var data = response.data.data
+          self.alertMsg(response.data.msg, 'success', 1000)
+          this.${_D}router.push({
+            name: '${classname}'
+          })
+        } else {
+          console.log(response.data)
+          self.alertMsg(response.data.msg, 'danger', 1000)
+        }
+      })
+    }
+  },
+  created() {
+    var self = this
+    self.init()
+    this.getDetail()
+  },
+  watch: {
+    ${_D}route(to, from) {
+      this.init()
+    }
+  }
+}
+</script>

@@ -1,0 +1,57 @@
+#set($_D="$")
+  // ---------------------${comments}管理Start----------------------------
+  /**
+   * ${comments}列表
+   */
+  query${className}List(obj) {
+    let data = obj
+    return Ajax({
+      url: `${_D}{basePortal}${moduleName}/${pathName}/list`,
+      method: 'get',
+      params: data
+    })
+  },
+  /**
+   * ${comments}删除
+   */
+  delete${className}(obj) {
+    const data = obj
+    return Ajax({
+      url: `${_D}{basePortal}${moduleName}/${pathName}/delete`,
+      method: 'delete',
+      data
+    })
+  },
+  /**
+   * ${comments}保存
+   */
+  save${className}(obj) {
+    const data = obj
+    return Ajax({
+      url: `${_D}{basePortal}${moduleName}/${pathName}/save`,
+      method: 'post',
+      data
+    })
+  },
+  /**
+   * ${comments}详情
+   */
+  get${className}Detail(obj) {
+    const data = obj
+    return Ajax({
+      url: `${_D}{basePortal}${moduleName}/${pathName}/info/` + data,
+      method: 'get'
+    })
+  },
+  /**
+   * ${comments}更新
+   */
+  update${className}Detail(obj) {
+    const data = obj
+    return Ajax({
+      url: `${_D}{basePortal}${moduleName}/${pathName}/update`,
+      method: 'put',
+      data
+    })
+  }
+// ---------------------${comments}管理End----------------------------

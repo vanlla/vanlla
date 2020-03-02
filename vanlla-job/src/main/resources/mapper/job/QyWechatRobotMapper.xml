@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.vanlla.job.mapper.QyWechatRobotMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.github.vanlla.job.entity.QyWechatRobotEntity" id="qyWechatRobotMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="content" column="content"/>
+        <result property="url" column="url"/>
+        <result property="executeTime" column="execute_time"/>
+    </resultMap>
+
+    <select id="search" resultType="com.github.vanlla.job.entity.QyWechatRobotEntity">
+        select * from tb_qy_wechat_robot where 1=1
+        <if test=" param.name != null and param.name != '' ">
+            and name like concat('%',#{param.name},'%')
+        </if>
+        <if test=" param.content != null and param.content != '' ">
+            and content like concat('%',#{param.content},'%')
+        </if>
+        <if test=" param.url != null and param.url != '' ">
+            and url like concat('%',#{param.url},'%')
+        </if>
+        <if test=" param.executeTime != null ">
+            and execute_time =#{param.executeTime}
+        </if>
+    </select>
+
+</mapper>

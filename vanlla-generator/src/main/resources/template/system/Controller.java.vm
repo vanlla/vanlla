@@ -1,0 +1,113 @@
+package ${package}.${moduleName}.controller;
+
+import ${mainPath}.util.PageUtils;
+import mobi.xianxian.iblog.component.common.web.BaseRestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+import mobi.xianxian.iblog.component.common.validator.group.AddGroup;
+import mobi.xianxian.iblog.component.common.validator.group.UpdateGroup;
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.service.I${className}Service;
+import io.swagger.annotations.*;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
+
+#if(${assertInfo.hasBigDecimalInSearch})
+import java.math.BigDecimal;
+#end
+#if(${assertInfo.hasDateInSearch})
+import java.util.Date;
+#end
+import java.util.Arrays;
+import java.util.Map;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Api(tags = "${comments}")
+@RestController
+@RequestMapping("/${moduleName}/${pathName}")
+public class ${className}Controller extends BaseRestController {
+    @Autowired
+    private I${className}Service ${classname}Service;
+
+    /**
+     * 列表
+     */
+    @GetMapping("/list")
+    @RequiresPermissions("${moduleName}:${pathName}:list")
+    @ApiOperation("查询${comments}列表")
+    @ApiImplicitParams({
+#foreach ($column in $columns)
+#if($column.where==true)
+            @ApiImplicitParam(name = "${column.attrname}", value="${column.comments}", paramType = "query"),
+#end
+#end
+            @ApiImplicitParam(name = "page", value="页码", paramType = "query" ,required = true, defaultValue = "1"),
+            @ApiImplicitParam(name = "limit", value="每页条数", paramType = "query",required = true, defaultValue = "10"),
+            @ApiImplicitParam(name = "sidx", value="排序字段", paramType = "query"),
+            @ApiImplicitParam(name = "order", value="排序方式，如：asc、desc",  paramType = "query")
+    })
+    public PageUtils<${className}Entity> list(@ApiIgnore @RequestParam Map<String, Object> params){
+        PageUtils<${className}Entity> page = ${classname}Service.search(params);
+
+        return page;
+    }
+
+
+    /**
+     * 信息
+     */
+    @GetMapping("/info/{${pk.attrname}}")
+    @RequiresPermissions("${moduleName}:${pathName}:info")
+    @ApiOperation("获取${comments}信息")
+    @ApiImplicitParam(name = "${pk.attrname}", value = "${pk.comments}",paramType="path", required = true)
+    public ${className}Entity info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+		${className}Entity ${classname} = ${classname}Service.getById(${pk.attrname});
+
+        return ${classname};
+    }
+
+    /**
+     * 保存
+     */
+    @PostMapping("/save")
+    @RequiresPermissions("${moduleName}:${pathName}:save")
+    @ApiOperation("保存${comments}")
+    public ${className}Entity save(@Validated(AddGroup.class) @RequestBody ${className}Entity ${classname}){
+        ${classname}Service.save(${classname});
+
+        return ${classname};
+    }
+
+    /**
+     * 修改
+     */
+    @PutMapping("/update")
+    @RequiresPermissions("${moduleName}:${pathName}:update")
+    @ApiOperation("修改${comments}")
+    public ${className}Entity update(@Validated(UpdateGroup.class) @RequestBody ${className}Entity ${classname}){
+		${classname}Service.updateById(${classname});
+
+        return ${classname};
+    }
+
+    /**
+     * 删除
+     */
+    @DeleteMapping("/delete")
+    @RequiresPermissions("${moduleName}:${pathName}:delete")
+    @ApiOperation("删除${comments}")
+    public void delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+		${classname}Service.removeByIds(Arrays.asList(${pk.attrname}s));
+
+    }
+
+}

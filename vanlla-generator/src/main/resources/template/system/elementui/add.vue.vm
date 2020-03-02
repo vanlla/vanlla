@@ -1,0 +1,122 @@
+#set($_D="$")
+<template>
+  <div class="container">
+    <div class="container_view">
+      <div class="addrole-content">
+        <div class="systemCommon-title">
+          <h1>新增${comments}</h1>
+        </div>
+        <div class="systemCommon-button">
+          <dy-button type="primary"
+            v-on:click="confirmSubmit(1)">保存并新增</dy-button>
+          <dy-button v-on:click="confirmSubmit(2)">保存</dy-button>
+          <dy-button type="default"
+            @click="back"
+            class="is-outline">取消</dy-button>
+        </div>
+        <div class="systemCommon-content">
+#foreach($column in $columns)#if($column.attrname != $pk.attrname)
+          <div class="label-item">
+            <label class="label-name import-label-name">
+#if($column.nullAble != 'YES')
+              <span class="require">*</span>
+#end
+              ${column.comments}：
+            </label>
+            <div class="label-input-item">
+#if($column.javaType == 'Date')
+              <el-date-picker
+                v-model="form.${column.attrname}"
+                type="date"
+                placeholder="请选择${column.comments}"/>
+#else
+              <dy-input type="input"
+#foreach ($rule in $column.rules)#if($rule == "长度")
+                        maxlength="${column.maxLength}"
+#end#end
+                        placeholder="请填写${column.comments}"
+                        :selected.sync="form.${column.attrname}">
+                </dy-input>
+#end
+            </div>
+          </div>
+#end#end
+        </div>
+      </div>
+      <div class="systemCommon-button">
+        <dy-button type="primary"
+          v-on:click="confirmSubmit(1)">保存并新增</dy-button>
+        <dy-button v-on:click="confirmSubmit(2)">保存</dy-button>
+        <dy-button type="default"
+          @click="back"
+          class="is-outline">取消</dy-button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import systemManage from '../api' // 引入API
+import { isInteger } from '@/utils/common'
+
+export default {
+  data() {
+    return {
+      form: {
+#foreach($column in $columns)#if($column.attrname != $pk.attrname)
+        ${column.attrname}: ''#if(!$column.lastOne),#end // ${column.comments}
+#end#end
+      }
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+
+    },
+    back() {
+      this.${_D}router.push({
+        name: '${classname}'
+      })
+    },
+    // 提交新增
+    confirmSubmit: function(type) {
+      let self = this
+      var params = {
+#foreach($column in $columns)#if($column.attrname != $pk.attrname)
+        ${column.attrname}: this.form.${column.attrname}#if(!$column.lastOne),#end // ${column.comments}
+#end#end
+      }
+      let input = /^[\s]*$/
+#foreach($column in $columns)#foreach ($rule in $column.rules)#if($rule == "非空")
+      if (input.test(this.form.${column.attrname})) {
+        self.alertMsg('请输入${column.comments}', 'warning', 1000)
+        return false
+      }
+#end#end#if($column.isNumber && $column.attrname != $pk.attrname)
+      if (!isInteger(parseInt(this.form.${column.attrname}))) {
+        self.alertMsg('${column.comments}必须为数字', 'warning', 1000)
+        return false
+      }
+#end#end
+      systemManage.save${className}(params).then(response => {
+        if (response.status === 200 && response.data.code === 0) {
+          var data = response.data.data
+          self.alertMsg(response.data.msg, 'success', 1000)
+          if (type === 1) {
+#foreach($column in $columns)#if($column.attrname != $pk.attrname)
+            this.form.${column.attrname} = ''
+#end#end
+          } else {
+            self.back()
+          }
+        } else {
+          self.alertMsg(response.data.msg, 'danger', 1000)
+        }
+      })
+    }
+  }
+}
+</script>

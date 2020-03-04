@@ -6,11 +6,11 @@
     <parent>
         <groupId>com.github.vanlla</groupId>
         <artifactId>vanlla-dependencies</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
         <relativePath>../vanlla-dependencies/pom.xml</relativePath>
     </parent>
     <artifactId>vanlla-system</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <packaging>jar</packaging>
 
     <name>vanlla-system</name>
@@ -26,12 +26,12 @@
         <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-core</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-shiro</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

@@ -8,7 +8,6 @@ import com.github.vanlla.system.service.IRoleMenuRefService;
 import com.github.vanlla.system.service.IRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
@@ -40,16 +39,7 @@ public class RoleController extends BaseRestController {
     @GetMapping("/list")
     @RequiresPermissions("system:role:list")
     @ApiOperation("查询角色实体列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "roleName", value = "角色名称", paramType = "query"),
-            @ApiImplicitParam(name = "roleDescription", value = "角色描述", paramType = "query"),
-            @ApiImplicitParam(name = "status", value = "状态", paramType = "query"),
-            @ApiImplicitParam(name = "page", value = "页码", paramType = "query", required = true, defaultValue = "1"),
-            @ApiImplicitParam(name = "limit", value = "每页条数", paramType = "query", required = true, defaultValue = "10"),
-            @ApiImplicitParam(name = "sidx", value = "排序字段", paramType = "query"),
-            @ApiImplicitParam(name = "order", value = "排序方式，如：asc、desc", paramType = "query")
-    })
-    public PageUtils<RoleEntity> list( @RequestParam Map<String, Object> params) {
+    public PageUtils<RoleEntity> list(@RequestParam(required = false) Map<String, Object> params) {
         PageUtils<RoleEntity> page = roleService.search(params);
 
         return page;

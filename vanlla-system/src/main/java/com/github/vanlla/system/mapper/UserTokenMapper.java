@@ -27,4 +27,15 @@ public interface UserTokenMapper extends BaseMapper<UserTokenEntity> {
      */
     UserTokenEntity findByToken(@Param("token") String token);
 
+
+    /**
+     * 查找是否有存在的token记录
+     *
+     * @param userId
+     * @param ext1
+     * @param loginType
+     * @return
+     */
+    UserTokenEntity findToken(@Param("userId") String userId, @Param("loginType") Integer loginType, @Param("ext1") String ext1);
+
 }

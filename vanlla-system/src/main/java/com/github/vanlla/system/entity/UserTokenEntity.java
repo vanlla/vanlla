@@ -1,6 +1,7 @@
 package com.github.vanlla.system.entity;
 
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -20,13 +21,15 @@ import java.util.Date;
 @TableName("tb_user_token")
 public class UserTokenEntity implements VanllaLoginToken, Serializable {
 
-    @TableId(type = IdType.INPUT)
+    @JSONField(serialize = false)
+    @TableId(type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
      * 用户ID
      */
-    private Long userId;
+    @JSONField(serialize = false)
+    private String userId;
 
     /**
      * 生成的Token
@@ -36,23 +39,32 @@ public class UserTokenEntity implements VanllaLoginToken, Serializable {
     /**
      * 过期时间
      */
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date expireTime;
 
     /**
      * 更新时间
      */
+    @JSONField(serialize = false)
     private Date updateTime;
 
     /**
-     * 用户类型 0:后台管理用户，1：Work Wechat用户
+     * 用户类型 0:后台管理用户，1：Work Wechat用户，需要后面扩展
      */
+    @JSONField(serialize = false)
     private Integer type;
 
     /**
-     * 设置ID
+     * 扩展字段1
      */
-    public void setId() {
-        this.id = this.type + "_" + this.getUserId();
-    }
+    @JSONField(serialize = false)
+    private String ext1;
+
+    /**
+     * 扩展字段2
+     */
+    @JSONField(serialize = false)
+    private String ext2;
+
 
 }

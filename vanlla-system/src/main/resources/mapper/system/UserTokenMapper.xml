@@ -13,5 +13,18 @@
         select * from tb_user_token where token=#{token}
     </select>
 
+    <select id="findToken" resultType="com.github.vanlla.system.entity.UserTokenEntity">
+        select * from tb_user_token where 1=1
+        <if test=" userId != null and userId != '' ">
+            and user_id = #{userId}
+        </if>
+        <if test=" loginType != null and loginType != '' ">
+            and `type` = #{loginType}
+        </if>
+        <if test=" ext1 != null and ext1 != '' ">
+            and ext1 = #{ext1}
+        </if>
+    </select>
+
 
 </mapper>

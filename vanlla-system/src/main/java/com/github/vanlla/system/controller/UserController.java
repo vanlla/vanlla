@@ -46,17 +46,7 @@ public class UserController extends BaseRestController {
     @GetMapping("/list")
     @RequiresPermissions("system:user:list")
     @ApiOperation("查询用户实体列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userName", value = "用户名", paramType = "query"),
-            @ApiImplicitParam(name = "mobile", value = "手机号码", paramType = "query"),
-            @ApiImplicitParam(name = "userType", value = "用户类别", paramType = "query"),
-            @ApiImplicitParam(name = "status", value = "状态", paramType = "query"),
-            @ApiImplicitParam(name = "page", value = "页码", paramType = "query", required = true, defaultValue = "1"),
-            @ApiImplicitParam(name = "limit", value = "每页条数", paramType = "query", required = true, defaultValue = "10"),
-            @ApiImplicitParam(name = "sidx", value = "排序字段", paramType = "query"),
-            @ApiImplicitParam(name = "order", value = "排序方式，如：asc、desc", paramType = "query")
-    })
-    public PageUtils<UserEntity> list( @RequestParam Map<String, Object> params) {
+    public PageUtils<UserEntity> list(@RequestParam(required = false) Map<String, Object> params) {
         PageUtils<UserEntity> page = userService.search(params);
 
         return page;

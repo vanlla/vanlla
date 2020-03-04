@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 权限树节点
  *
- * @author Ivan
+ * @author Vanlla
  * @since 0.1
  */
 @Data

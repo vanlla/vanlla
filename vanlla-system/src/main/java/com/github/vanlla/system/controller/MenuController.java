@@ -9,7 +9,6 @@ import com.github.vanlla.system.vo.MenuNode;
 import com.github.vanlla.system.vo.MenuVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,22 +37,7 @@ public class MenuController extends BaseRestController {
     @GetMapping("/list")
     @RequiresPermissions("system:menu:list")
     @ApiOperation("查询菜单管理列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "type", value = "类型", paramType = "query"),
-            @ApiImplicitParam(name = "name", value = "名称", paramType = "query"),
-            @ApiImplicitParam(name = "url", value = "菜单URL", paramType = "query"),
-            @ApiImplicitParam(name = "perms", value = "授权", paramType = "query"),
-            @ApiImplicitParam(name = "icon", value = "菜单图标", paramType = "query"),
-            @ApiImplicitParam(name = "isLeaf", value = "1为叶子节点，0不是叶子节点", paramType = "query"),
-            @ApiImplicitParam(name = "orderNo", value = "排序", paramType = "query"),
-            @ApiImplicitParam(name = "rwAccess", value = "读写权限 0为只读，1为读写", paramType = "query"),
-            @ApiImplicitParam(name = "isSysmenu", value = "是否系统菜单，0为系统菜单，1或空为业务菜单", paramType = "query"),
-            @ApiImplicitParam(name = "page", value = "页码", paramType = "query", required = true, defaultValue = "1"),
-            @ApiImplicitParam(name = "limit", value = "每页条数", paramType = "query", required = true, defaultValue = "10"),
-            @ApiImplicitParam(name = "sidx", value = "排序字段", paramType = "query"),
-            @ApiImplicitParam(name = "order", value = "排序方式，如：asc、desc", paramType = "query")
-    })
-    public PageUtils<MenuEntity> list(@RequestParam Map<String, Object> params) {
+    public PageUtils<MenuEntity> list(@RequestParam(required = false) Map<String, Object> params) {
         PageUtils<MenuEntity> page = menuService.search(params);
 
         return page;
@@ -146,7 +130,7 @@ public class MenuController extends BaseRestController {
     @RequiresPermissions("system:user:login")
     @ApiOperation("获取用户菜单")
     public List<MenuNode> getMenuList() {
-        return menuService.getMenuByUserId(ShiroUtils.getUserId());
+        return menuService.getMenuByUserId(Long.valueOf(ShiroUtils.getUserId()));
     }
 
 

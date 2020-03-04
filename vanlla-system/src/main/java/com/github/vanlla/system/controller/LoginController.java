@@ -1,11 +1,11 @@
 package com.github.vanlla.system.controller;
 
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.vanlla.core.exception.RestException;
 import com.github.vanlla.core.web.BaseRestController;
-import com.github.vanlla.shiro.oauth2.TokenGenerator;
+import com.github.vanlla.redis.util.RedisUtils;
 import com.github.vanlla.shiro.token.VanllaLoginToken;
 import com.github.vanlla.shiro.util.LoginType;
 import com.github.vanlla.shiro.util.Sha256Hash;
@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,8 +57,9 @@ public class LoginController extends BaseRestController {
     @Autowired
     private ICaptchaService captchaService;
 
-
     public static String springRabbitmqHost;
+
+    private static final String REDIS_LOGIN_PREFIX = "manager_login_";
 
     @Value("${spring.rabbitmq.host:127.0.0.1}")
     public void setSpringRabbitmqHost(String springRabbitmqHost) {
@@ -80,29 +80,29 @@ public class LoginController extends BaseRestController {
         }
 
         //判断账号是否存在
-        UserTokenEntity loginToken = new UserTokenEntity();
         UserEntity user = userService.findByUserName(login.getUserName());
         if (user == null) {
             throw new RestException(401, "帐号或密码不正确,请重新输入");
         }
 
+        String failLoginStr = RedisUtils.get(REDIS_LOGIN_PREFIX + login.getUserName());
+        int failLoginCount = StrUtil.isBlank(failLoginStr) ? 0 : Integer.valueOf(failLoginStr);
+        if (5 <= failLoginCount) {
+            throw new RestException(401, "登录失败次数过多，请稍后重试");
+        }
+
+        UserTokenEntity loginToken;
         //判断密码,是否正确
         String password = (new Sha256Hash(login.getPassword(), user.getSalt())).toHex();
 
         if (user.getPassword().equals(password)) {
-            loginToken.setToken(TokenGenerator.generateValue(LoginType.MANATER));
-            loginToken.setExpireTime(DateUtil.offsetHour(Calendar.getInstance().getTime(), 2));
-            loginToken.setUserId(user.getUserId());
-            loginToken.setType(LoginType.MANATER);
-            loginToken.setId();
-            userTokenService.saveOrUpdate(loginToken);
+            //刷新token
+            loginToken = userTokenService.refreshToken(user.getUserId().toString(), LoginType.MANATER, null);
         } else {
-            //TODO 添加失败登录次数
+            RedisUtils.set(REDIS_LOGIN_PREFIX + login.getUserName(), failLoginCount + 1, 3600L);
             throw new RestException(401, "帐号或密码不正确,请重新输入");
         }
-        //输出到前端去掉userId和id属性
-        loginToken.setUserId(null);
-        loginToken.setId(null);
+
         return loginToken;
     }
 
@@ -110,7 +110,7 @@ public class LoginController extends BaseRestController {
     @PostMapping("/user/info")
     public Map<String, Object> info() {
 
-        List<MenuNode> menuList = menuService.getMenuByUserId(ShiroUtils.getUserId());
+        List<MenuNode> menuList = menuService.getMenuByUserId(Long.valueOf(ShiroUtils.getUserId()));
         Map<String, Object> returnMap = new HashMap<>();
         returnMap.put("roles", new String[]{"admin"});
         returnMap.put("name", "admin");

@@ -46,7 +46,7 @@ public class ManagerRealm extends VanllaRealmAdapter {
 
     @Override
     public Set<String> getStringPermissions(VanllaLoginToken loginToken) {
-        Set<String> permissions = new HashSet<>(menuService.findPermsByUserId(loginToken.getUserId()));
+        Set<String> permissions = new HashSet<>(menuService.findPermsByUserId(Long.valueOf(loginToken.getUserId())));
         return permissions;
     }
 }

@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Vanlla
  * @since 1.0
  */
-@Api(tags = "企业微信群聊机器人")
+@Api(tags = "企业微信群聊机器人管理")
 @RestController
 @RequestMapping("/schedule/robot")
 public class QyWechatRobotController extends BaseRestController {
@@ -34,19 +34,8 @@ public class QyWechatRobotController extends BaseRestController {
     @GetMapping("/list")
     @RequiresPermissions("schedule:qyWechatRobot:list")
     @ApiOperation("查询企业微信群聊机器人列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "name", value = "机器人名称", paramType = "query"),
-            @ApiImplicitParam(name = "content", value = "内容", paramType = "query"),
-            @ApiImplicitParam(name = "url", value = "机器人地址", paramType = "query"),
-            @ApiImplicitParam(name = "executeTime", value = "执行时间", paramType = "query"),
-            @ApiImplicitParam(name = "page", value = "页码", paramType = "query", required = true, defaultValue = "1"),
-            @ApiImplicitParam(name = "limit", value = "每页条数", paramType = "query", required = true, defaultValue = "10"),
-            @ApiImplicitParam(name = "sidx", value = "排序字段", paramType = "query"),
-            @ApiImplicitParam(name = "order", value = "排序方式，如：asc、desc", paramType = "query")
-    })
-    public PageUtils<QyWechatRobotEntity> list(@RequestParam Map<String, Object> params) {
+    public PageUtils<QyWechatRobotEntity> list(@RequestParam(required = false) Map<String, Object> params) {
         PageUtils<QyWechatRobotEntity> page = qyWechatRobotService.search(params);
-
         return page;
     }
 

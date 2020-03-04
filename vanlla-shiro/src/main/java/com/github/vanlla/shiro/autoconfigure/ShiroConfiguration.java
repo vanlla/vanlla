@@ -18,10 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * shiro配置类
@@ -34,7 +31,7 @@ public class ShiroConfiguration {
 
 
     @Bean
-    public ShiroFilterFactoryBean shiroFilter(ShiroFilterPathAdapter adapter, SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilter(ShiroFilterPathAdapter adapter, SecurityManager securityManager, VanllaShiroProperties vanllaShiroProperties) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
         Map<String, Filter> filters = new HashMap();
@@ -48,6 +45,13 @@ public class ShiroConfiguration {
         for (int i = 0; i < anonConfig.length; ++i) {
             filterMap.put(anonConfig[i], "anon");
         }
+
+        //配置文件来源的不需要权限路径
+        List<String> anonLists = vanllaShiroProperties.getAnonConfigs();
+        for (int i = 0; i < anonLists.size(); ++i) {
+            filterMap.put(anonLists.get(i), "anon");
+        }
+
 
         //需要 OAuth2Filter处理的路径
         String[] oAuth2Config = adapter.getOAuth2Config();

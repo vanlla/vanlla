@@ -30,7 +30,7 @@ public class ShiroUtils {
         return (VanllaLoginToken) SecurityUtils.getSubject().getPrincipal();
     }
 
-    public static Long getUserId() {
+    public static String getUserId() {
         return getLoginToken().getUserId();
     }
 

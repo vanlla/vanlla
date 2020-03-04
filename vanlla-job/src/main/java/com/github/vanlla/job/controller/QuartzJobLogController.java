@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Vanlla
  * @since 1.0
  */
-@Api(tags = "定时任务日志")
+@Api(tags = "定时任务日志管理")
 @RestController
 @RequestMapping("/schedule/quartzJobLog")
 public class QuartzJobLogController extends BaseRestController {
@@ -34,17 +34,7 @@ public class QuartzJobLogController extends BaseRestController {
     @GetMapping("/list")
     @RequiresPermissions("schedule:quartzJobLog:list")
     @ApiOperation("查询定时任务日志列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "result", value = "状态", paramType = "query"),
-            @ApiImplicitParam(name = "exception", value = "异常信息", paramType = "query"),
-            @ApiImplicitParam(name = "startTime", value = "开始时间", paramType = "query"),
-            @ApiImplicitParam(name = "completeTime", value = "结束时间", paramType = "query"),
-            @ApiImplicitParam(name = "page", value = "页码", paramType = "query", required = true, defaultValue = "1"),
-            @ApiImplicitParam(name = "limit", value = "每页条数", paramType = "query", required = true, defaultValue = "10"),
-            @ApiImplicitParam(name = "sidx", value = "排序字段", paramType = "query"),
-            @ApiImplicitParam(name = "order", value = "排序方式，如：asc、desc", paramType = "query")
-    })
-    public PageUtils<QuartzJobLogEntity> list(@RequestParam Map<String, Object> params) {
+    public PageUtils<QuartzJobLogEntity> list(@RequestParam(required = false) Map<String, Object> params) {
         PageUtils<QuartzJobLogEntity> page = quartzJobLogService.search(params);
 
         return page;

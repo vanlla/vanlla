@@ -15,12 +15,12 @@ public interface VanllaLoginToken {
      *
      * @param userId
      */
-    void setUserId(Long userId);
+    void setUserId(String userId);
 
     /**
      * 获取登录的用户ID
      */
-    Long getUserId();
+    String getUserId();
 
     /**
      * 设置Token

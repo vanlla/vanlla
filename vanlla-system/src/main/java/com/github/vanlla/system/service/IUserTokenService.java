@@ -23,7 +23,18 @@ public interface IUserTokenService extends IService<UserTokenEntity> {
      * @param token
      * @return
      */
-    UserTokenEntity findByToken(@Param("token") String token);
+    UserTokenEntity findByToken(String token);
+
+
+    /**
+     * 根据条件刷新当前token
+     *
+     * @param userId
+     * @param ext1
+     * @param loginType
+     * @return
+     */
+    UserTokenEntity refreshToken(String userId, Integer loginType, String ext1);
 
 }
 

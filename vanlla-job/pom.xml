@@ -7,13 +7,13 @@
     <parent>
         <groupId>com.github.vanlla</groupId>
         <artifactId>vanlla-dependencies</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
         <relativePath>../vanlla-dependencies/pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>vanlla-job</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 
     <name>vanlla-job</name>
     <url>https://github.com/vanlla/vanlla</url>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-shiro</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

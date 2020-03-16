@@ -6,12 +6,12 @@
     <parent>
         <groupId>com.github.vanlla</groupId>
         <artifactId>vanlla-dependencies</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
         <relativePath>../vanlla-dependencies/pom.xml</relativePath>
     </parent>
 
     <artifactId>vanlla-core</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
 
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-redis</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.5</version>
         </dependency>
 
     </dependencies>

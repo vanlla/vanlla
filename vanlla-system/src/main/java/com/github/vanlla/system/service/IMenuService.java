@@ -34,7 +34,7 @@ public interface IMenuService extends IService<MenuEntity> {
      * @param parentId
      * @return
      */
-    List<MenuNode> findByParentId(@Param("parentId") Long parentId);
+    List<MenuNode> findByParentId(@Param("parentId") String parentId);
 
 
     /**
@@ -43,7 +43,7 @@ public interface IMenuService extends IService<MenuEntity> {
      * @param id
      * @return
      */
-    MenuVO findById(Long id);
+    MenuVO findById(String id);
 
 
     /**
@@ -59,7 +59,7 @@ public interface IMenuService extends IService<MenuEntity> {
      * @param userId
      * @return
      */
-    List<MenuNode> getMenuByUserId(Long userId);
+    List<MenuNode> getMenuByUserId(String userId);
 
 
     /**
@@ -68,6 +68,6 @@ public interface IMenuService extends IService<MenuEntity> {
      * @param id
      * @return
      */
-    List<String> findPermsByUserId(@Param("id") Long id);
+    List<String> findPermsByUserId(@Param("id") String id);
 }
 

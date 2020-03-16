@@ -32,6 +32,6 @@ public interface UserMapper extends BaseMapper<UserEntity> {
      * @param userId
      * @return
      */
-    UserEntity findByUserId(@Param("userId") Long userId);
+    UserEntity findByUserId(@Param("userId") String userId);
 
 }

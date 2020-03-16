@@ -15,17 +15,17 @@ import lombok.Data;
 @TableName("tb_role_menu_ref")
 public class RoleMenuRefEntity {
 
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
      * 角色ID
      */
-    private Long roleId;
+    private String roleId;
 
     /**
      * 权限ID
      */
-    private Long menuId;
+    private String menuId;
 
 }

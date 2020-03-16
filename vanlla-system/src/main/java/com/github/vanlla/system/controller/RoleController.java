@@ -53,7 +53,7 @@ public class RoleController extends BaseRestController {
     @RequiresPermissions("system:role:info")
     @ApiOperation("获取角色实体信息")
     @ApiImplicitParam(name = "roleId", value = "角色ID", paramType = "path", required = true)
-    public RoleForm info(@PathVariable("roleId") Long roleId) {
+    public RoleForm info(@PathVariable("roleId") String roleId) {
         RoleForm roleInfo = new RoleForm();
         RoleEntity role = roleService.getById(roleId);
         BeanUtils.copyProperties(role, roleInfo);
@@ -100,7 +100,7 @@ public class RoleController extends BaseRestController {
     @DeleteMapping("/delete")
     @RequiresPermissions("system:role:delete")
     @ApiOperation("删除角色实体")
-    public void delete(@RequestBody Long[] roleIds) {
+    public void delete(@RequestBody String[] roleIds) {
         roleService.delelteRole(roleIds);
 
     }

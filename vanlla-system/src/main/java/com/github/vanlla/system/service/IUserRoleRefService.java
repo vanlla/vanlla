@@ -25,7 +25,7 @@ public interface IUserRoleRefService extends IService<UserRoleRefEntity> {
      * @param userId
      * @return
      */
-    boolean deleteByUserId(@Param("userId") Long userId);
+    boolean deleteByUserId(@Param("userId") String userId);
 
 
     /**
@@ -34,6 +34,6 @@ public interface IUserRoleRefService extends IService<UserRoleRefEntity> {
      * @param userId
      * @return
      */
-    List<Long> getRoleByUserId(@Param("userId") Long userId);
+    List<String> getRoleByUserId(@Param("userId") String userId);
 }
 

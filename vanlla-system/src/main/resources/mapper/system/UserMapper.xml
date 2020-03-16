@@ -33,7 +33,7 @@
         select * from tb_user where user_name= #{userName}
     </select>
     <select id="findByUserId" resultType="com.github.vanlla.system.entity.UserEntity"
-            parameterType="java.lang.Long">
+            parameterType="java.lang.String">
         select user_id, user_name,  mobile, id_card, status, gmt_created, gmt_modified, gmt_author,  user_type, last_login_time, last_login_ip, description  from tb_user where user_id =#{userId}
     </select>
 

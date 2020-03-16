@@ -36,7 +36,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
 
 
     @Override
-    public List<MenuNode> findByParentId(Long parentId) {
+    public List<MenuNode> findByParentId(String parentId) {
         return baseMapper.findByParentId(parentId);
     }
 
@@ -47,17 +47,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
     }
 
     @Override
-    public MenuVO findById(Long id) {
+    public MenuVO findById(String id) {
         return baseMapper.findMenuInfoById(id);
     }
 
 
     @Override
     public List<MenuNode> getTree() {
-        return this.getTreeMenuNode(0L);
+        return this.getTreeMenuNode("0");
     }
 
-    private List<MenuNode> getTreeMenuNode(Long parentId) {
+    private List<MenuNode> getTreeMenuNode(String parentId) {
 
         List<MenuNode> menuNodes = baseMapper.findByParentId(parentId);
         if (!ObjectUtil.isEmpty(menuNodes)) {
@@ -70,12 +70,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
 
 
     @Override
-    public List<MenuNode> getMenuByUserId(Long userId) {
+    public List<MenuNode> getMenuByUserId(String userId) {
         List<MenuEntity> menuList = this.baseMapper.findMenuByUserId(userId);
-        return this.getMenuNode(menuList, 0L);
+        return this.getMenuNode(menuList, "0");
     }
 
-    private List<MenuNode> getMenuNode(List<MenuEntity> menuList, Long parentId) {
+    private List<MenuNode> getMenuNode(List<MenuEntity> menuList, String parentId) {
 
         List<MenuNode> menuNodes = new ArrayList<>();
         if (!ObjectUtil.isEmpty(menuList)) {
@@ -102,7 +102,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
 
 
     @Override
-    public List<String> findPermsByUserId(Long id) {
+    public List<String> findPermsByUserId(String id) {
         return baseMapper.findPermsByUserId(id);
     }
 }

@@ -24,14 +24,14 @@ public interface IRoleService extends IService<RoleEntity> {
      * @param menuIds
      * @return
      */
-    boolean saveOrUpdateRole(RoleEntity role, List<Long> menuIds);
+    boolean saveOrUpdateRole(RoleEntity role, List<String> menuIds);
 
     /**
      * 删除角色
      *
      * @param roleId
      */
-    void delelteRole(Long[] roleId);
+    void delelteRole(String[] roleId);
 
     /**
      * 获取所有的角色

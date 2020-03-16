@@ -24,7 +24,7 @@
         delete from tb_user_role_ref where user_id=#{userId}
     </delete>
 
-    <select id="getRoleByUserId" resultType="java.lang.Long">
+    <select id="getRoleByUserId" resultType="java.lang.String">
         select role_id from tb_user_role_ref where user_id=#{userId}
     </select>
 

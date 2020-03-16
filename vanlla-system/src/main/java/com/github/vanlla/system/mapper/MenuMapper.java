@@ -35,7 +35,7 @@ public interface MenuMapper extends BaseMapper<MenuEntity> {
      * @param parentId
      * @return
      */
-    List<MenuNode> findByParentId(@Param("parentId") Long parentId);
+    List<MenuNode> findByParentId(@Param("parentId") String parentId);
 
     /**
      * 查找菜单详情
@@ -43,7 +43,7 @@ public interface MenuMapper extends BaseMapper<MenuEntity> {
      * @param id
      * @return
      */
-    MenuVO findMenuInfoById(@Param("id") Long id);
+    MenuVO findMenuInfoById(@Param("id") String id);
 
     /**
      * 查找用户的菜单
@@ -51,7 +51,7 @@ public interface MenuMapper extends BaseMapper<MenuEntity> {
      * @param id
      * @return
      */
-    List<MenuEntity> findMenuByUserId(@Param("id") Long id);
+    List<MenuEntity> findMenuByUserId(@Param("id") String id);
 
     /**
      * 查找用户的权限
@@ -59,6 +59,6 @@ public interface MenuMapper extends BaseMapper<MenuEntity> {
      * @param id
      * @return
      */
-    List<String> findPermsByUserId(@Param("id") Long id);
+    List<String> findPermsByUserId(@Param("id") String id);
 
 }

@@ -24,19 +24,19 @@ public class UserRoleRefEntity implements Serializable {
     /**
      * ID
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_UUID)
     @ApiModelProperty(value = "ID", example = "1000001")
-    private Long id;
+    private String id;
     /**
      * 用户ID
      */
     @ApiModelProperty(value = "用户ID", example = "测试001")
-    private Long userId;
+    private String userId;
     /**
      * 角色ID
      */
     @ApiModelProperty(value = "角色ID", example = "测试001")
-    private Long roleId;
+    private String roleId;
 
 
 }

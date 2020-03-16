@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class RoleForm {
 
-    private Long roleId;
+    private String roleId;
     /**
      * 角色名称
      */
@@ -25,5 +25,5 @@ public class RoleForm {
     /**
      * 权限列表
      */
-    private List<Long> menuIds;
+    private List<String> menuIds;
 }

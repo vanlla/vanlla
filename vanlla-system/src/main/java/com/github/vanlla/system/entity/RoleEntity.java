@@ -24,9 +24,9 @@ public class RoleEntity implements Serializable {
     /**
      * 角色ID
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_UUID)
     @ApiModelProperty(value = "角色ID", example = "1000001")
-    private Long roleId;
+    private String roleId;
     /**
      * 角色名称
      */

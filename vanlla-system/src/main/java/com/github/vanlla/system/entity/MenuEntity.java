@@ -24,14 +24,14 @@ public class MenuEntity implements Serializable {
     /**
      * 菜单编号
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_UUID)
     @ApiModelProperty(value = "菜单编号", example = "1")
-    private Long menuId;
+    private String menuId;
     /**
      * 父菜单ID
      */
     @ApiModelProperty(value = "父菜单ID", example = "1")
-    private Long parentId;
+    private String parentId;
     /**
      * 类型
      */

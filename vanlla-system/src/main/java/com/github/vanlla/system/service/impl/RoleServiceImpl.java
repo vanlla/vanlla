@@ -43,7 +43,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public boolean saveOrUpdateRole(RoleEntity role, List<Long> menuIds) {
+    public boolean saveOrUpdateRole(RoleEntity role, List<String> menuIds) {
 
         //保存角色
         this.saveOrUpdate(role);
@@ -56,7 +56,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     }
 
 
-    private void addRoleMenuRefs(Long roleId, List<Long> menuIds) {
+    private void addRoleMenuRefs(String roleId, List<String> menuIds) {
 
         if (ObjectUtil.isEmpty(menuIds)) {
             return;
@@ -64,7 +64,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
 
         RoleMenuRefEntity ref = null;
         List<RoleMenuRefEntity> refs = new ArrayList<>();
-        for (Long menuId : menuIds) {
+        for (String menuId : menuIds) {
             ref = new RoleMenuRefEntity();
             ref.setMenuId(menuId);
             ref.setRoleId(roleId);
@@ -76,12 +76,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     }
 
     @Override
-    public void delelteRole(Long[] roleIds) {
+    public void delelteRole(String[] roleIds) {
         if (ArrayUtil.isEmpty(roleIds)) {
             return;
         }
 
-        for (Long roleId : roleIds) {
+        for (String roleId : roleIds) {
             this.removeById(roleId);
             roleMenuRefService.deleteByRoleId(roleId);
         }

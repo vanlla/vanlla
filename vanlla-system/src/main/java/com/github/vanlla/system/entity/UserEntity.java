@@ -26,9 +26,9 @@ public class UserEntity implements Serializable {
     /**
      * ID
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_UUID)
     @ApiModelProperty(value = "ID", example = "1000001")
-    private Long userId;
+    private String userId;
     /**
      * 用户名
      */

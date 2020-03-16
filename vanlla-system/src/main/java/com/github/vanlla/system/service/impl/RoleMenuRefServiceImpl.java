@@ -19,12 +19,12 @@ import java.util.List;
 public class RoleMenuRefServiceImpl extends ServiceImpl<RoleMenuRefMapper, RoleMenuRefEntity> implements IRoleMenuRefService {
 
     @Override
-    public boolean deleteByRoleId(Long roleId) {
+    public boolean deleteByRoleId(String roleId) {
         return baseMapper.deleteByRoleId(roleId);
     }
 
     @Override
-    public List<Long> findByRoleId(Long roleId) {
+    public List<String> findByRoleId(String roleId) {
         return baseMapper.findByRoleId(roleId);
     }
 }

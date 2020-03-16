@@ -42,7 +42,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public boolean saveOrUpdateUser(UserEntity user, List<Long> roleIds) {
+    public boolean saveOrUpdateUser(UserEntity user, List<String> roleIds) {
 
         //保存用户关系
         this.saveOrUpdate(user);
@@ -54,14 +54,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
         return true;
     }
 
-    private void addUserRoleRefs(Long userId, List<Long> roleIds) {
+    private void addUserRoleRefs(String userId, List<String> roleIds) {
         if (ObjectUtil.isEmpty(roleIds)) {
             return;
         }
 
         UserRoleRefEntity ref = null;
         List<UserRoleRefEntity> refs = new ArrayList<>();
-        for (Long roleId : roleIds) {
+        for (String roleId : roleIds) {
             ref = new UserRoleRefEntity();
             ref.setRoleId(roleId);
             ref.setUserId(userId);
@@ -78,7 +78,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity> impleme
     }
 
     @Override
-    public UserEntity findByUserId(Long userId) {
+    public UserEntity findByUserId(String userId) {
         return baseMapper.findByUserId(userId);
     }
 }

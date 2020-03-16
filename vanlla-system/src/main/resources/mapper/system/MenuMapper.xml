@@ -57,7 +57,7 @@
          select menu_id as id ,name ,is_leaf from tb_menu where parent_id =#{parentId} order by order_no asc
     </select>
     <select id="findMenuInfoById" resultType="com.github.vanlla.system.vo.MenuVO"
-            parameterType="java.lang.Long">
+            parameterType="java.lang.String">
         select t.*,p.name as parent_name from tb_menu t left join  tb_menu p on t.parent_id = p.menu_id where t.menu_id=#{id}
 
     </select>

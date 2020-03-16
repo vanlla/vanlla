@@ -110,7 +110,7 @@ public class LoginController extends BaseRestController {
     @PostMapping("/user/info")
     public Map<String, Object> info() {
 
-        List<MenuNode> menuList = menuService.getMenuByUserId(Long.valueOf(ShiroUtils.getUserId()));
+        List<MenuNode> menuList = menuService.getMenuByUserId(ShiroUtils.getUserId());
         Map<String, Object> returnMap = new HashMap<>();
         returnMap.put("roles", new String[]{"admin"});
         returnMap.put("name", "admin");

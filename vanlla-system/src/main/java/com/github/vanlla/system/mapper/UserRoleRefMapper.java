@@ -25,7 +25,7 @@ public interface UserRoleRefMapper extends BaseMapper<UserRoleRefEntity> {
      * @param userId
      * @return
      */
-    boolean deleteByUserId(@Param("userId") Long userId);
+    boolean deleteByUserId(@Param("userId") String userId);
 
     /**
      * 获取用户所属角色集合
@@ -33,6 +33,6 @@ public interface UserRoleRefMapper extends BaseMapper<UserRoleRefEntity> {
      * @param userId
      * @return
      */
-    List<Long> getRoleByUserId(@Param("userId") Long userId);
+    List<String> getRoleByUserId(@Param("userId") String userId);
 
 }

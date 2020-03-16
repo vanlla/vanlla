@@ -51,7 +51,7 @@ public class MenuController extends BaseRestController {
     @RequiresPermissions("system:menu:info")
     @ApiOperation("获取菜单管理信息")
     @ApiImplicitParam(name = "menuId", value = "菜单编号", paramType = "path", required = true)
-    public MenuVO info(@PathVariable("menuId") Long menuId) {
+    public MenuVO info(@PathVariable("menuId") String menuId) {
         return menuService.findById(menuId);
     }
 
@@ -107,7 +107,7 @@ public class MenuController extends BaseRestController {
      */
     @GetMapping("/parent/{parentId}")
     @RequiresPermissions("system:menu:list")
-    public List<MenuNode> parent(@PathVariable("parentId") Long parentId) {
+    public List<MenuNode> parent(@PathVariable("parentId") String parentId) {
 
         return menuService.findByParentId(parentId);
     }
@@ -130,7 +130,7 @@ public class MenuController extends BaseRestController {
     @RequiresPermissions("system:user:login")
     @ApiOperation("获取用户菜单")
     public List<MenuNode> getMenuList() {
-        return menuService.getMenuByUserId(Long.valueOf(ShiroUtils.getUserId()));
+        return menuService.getMenuByUserId(ShiroUtils.getUserId());
     }
 
 

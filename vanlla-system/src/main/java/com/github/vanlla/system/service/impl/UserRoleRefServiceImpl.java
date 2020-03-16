@@ -32,13 +32,13 @@ public class UserRoleRefServiceImpl extends ServiceImpl<UserRoleRefMapper, UserR
 
 
     @Override
-    public boolean deleteByUserId(Long userId) {
+    public boolean deleteByUserId(String userId) {
         return baseMapper.deleteByUserId(userId);
     }
 
 
     @Override
-    public List<Long> getRoleByUserId(Long userId) {
+    public List<String> getRoleByUserId(String userId) {
         return baseMapper.getRoleByUserId(userId);
     }
 }

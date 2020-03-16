@@ -4,11 +4,11 @@
 <mapper namespace="com.github.vanlla.system.mapper.RoleMenuRefMapper">
 
 
-    <delete id="deleteByRoleId" parameterType="java.lang.Long">
+    <delete id="deleteByRoleId" parameterType="java.lang.String">
          delete from tb_role_menu_ref where role_id=#{roleId}
     </delete>
 
-    <select id="findByRoleId" resultType="java.lang.Long" parameterType="java.lang.Long">
+    <select id="findByRoleId" resultType="java.lang.String" parameterType="java.lang.String">
          select menu_id from tb_role_menu_ref where role_id=#{roleId}
     </select>
 

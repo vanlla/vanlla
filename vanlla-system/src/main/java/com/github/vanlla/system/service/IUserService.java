@@ -25,7 +25,7 @@ public interface IUserService extends IService<UserEntity> {
      * @param roleIds
      * @return
      */
-    boolean saveOrUpdateUser(UserEntity user, List<Long> roleIds);
+    boolean saveOrUpdateUser(UserEntity user, List<String> roleIds);
 
     /**
      * 根据用户名称查找用户
@@ -41,6 +41,6 @@ public interface IUserService extends IService<UserEntity> {
      * @param userId
      * @return
      */
-    UserEntity findByUserId(@Param("userId") Long userId);
+    UserEntity findByUserId(@Param("userId") String userId);
 }
 

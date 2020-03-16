@@ -20,7 +20,7 @@ public interface RoleMenuRefMapper extends BaseMapper<RoleMenuRefEntity> {
      * @param roleId 角色ID
      * @return
      */
-    boolean deleteByRoleId(@Param("roleId") Long roleId);
+    boolean deleteByRoleId(@Param("roleId") String roleId);
 
 
     /**
@@ -29,7 +29,7 @@ public interface RoleMenuRefMapper extends BaseMapper<RoleMenuRefEntity> {
      * @param roleId
      * @return
      */
-    List<Long> findByRoleId(@Param("roleId") Long roleId);
+    List<String> findByRoleId(@Param("roleId") String roleId);
 
 
 }

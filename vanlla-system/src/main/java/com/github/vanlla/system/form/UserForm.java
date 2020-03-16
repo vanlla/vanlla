@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class UserForm {
 
-    private Long userId;
+    private String userId;
     /**
      * 用户名
      */
@@ -37,6 +37,6 @@ public class UserForm {
     /**
      * 所属角色ID集合
      */
-    private List<Long> roleIds;
+    private List<String> roleIds;
 
 }

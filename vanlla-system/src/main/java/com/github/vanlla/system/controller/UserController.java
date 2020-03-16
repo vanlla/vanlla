@@ -60,7 +60,7 @@ public class UserController extends BaseRestController {
     @RequiresPermissions("system:user:info")
     @ApiOperation("获取用户实体信息")
     @ApiImplicitParam(name = "userId", value = "ID", paramType = "path", required = true)
-    public UserForm info(@PathVariable("userId") Long userId) {
+    public UserForm info(@PathVariable("userId") String userId) {
         UserForm result = new UserForm();
         UserEntity user = userService.findByUserId(userId);
         BeanUtils.copyProperties(user, result);

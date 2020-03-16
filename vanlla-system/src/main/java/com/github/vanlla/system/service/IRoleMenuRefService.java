@@ -20,7 +20,7 @@ public interface IRoleMenuRefService extends IService<RoleMenuRefEntity> {
      * @param roleId 角色ID
      * @return
      */
-    boolean deleteByRoleId(@Param("roleId") Long roleId);
+    boolean deleteByRoleId(@Param("roleId") String roleId);
 
     /**
      * 通过角色查找权限
@@ -28,6 +28,6 @@ public interface IRoleMenuRefService extends IService<RoleMenuRefEntity> {
      * @param roleId
      * @return
      */
-    List<Long> findByRoleId(@Param("roleId") Long roleId);
+    List<String> findByRoleId(@Param("roleId") String roleId);
 
 }

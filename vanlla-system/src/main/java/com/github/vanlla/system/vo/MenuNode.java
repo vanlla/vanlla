@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class MenuNode {
 
-    private Long id;
+    private String id;
 
     private String name;
 

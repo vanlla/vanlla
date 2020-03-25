@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.vanlla.system.mapper.ExternalUserMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.github.vanlla.system.entity.ExternalUserEntity" id="externalUserMap">
+        <result property="id" column="id"/>
+        <result property="internalUserId" column="internal_user_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userType" column="user_type"/>
+        <result property="organization" column="organization"/>
+        <result property="ext1" column="ext1"/>
+        <result property="ext2" column="ext2"/>
+    </resultMap>
+
+    <select id="search" resultType="com.github.vanlla.system.entity.ExternalUserEntity">
+        select * from tb_external_user where 1=1
+        <if test=" param.userName != null and param.userName != '' ">
+            and user_name like concat('%',#{param.userName},'%')
+        </if>
+        <if test=" param.userType != null and param.userType != '' ">
+            and user_type like concat('%',#{param.userType},'%')
+        </if>
+        <if test=" param.organization != null and param.organization != '' ">
+            and organization like concat('%',#{param.organization},'%')
+        </if>
+        <if test=" param.ext1 != null and param.ext1 != '' ">
+            and ext1 like concat('%',#{param.ext1},'%')
+        </if>
+        <if test=" param.ext2 != null and param.ext2 != '' ">
+            and ext2 like concat('%',#{param.ext2},'%')
+        </if>
+    </select>
+
+    <select id="findExternalUser" resultType="com.github.vanlla.system.entity.ExternalUserEntity">
+        select * from tb_external_user where  internal_user_id = #{userId} and organization = #{organization}
+    </select>
+
+</mapper>

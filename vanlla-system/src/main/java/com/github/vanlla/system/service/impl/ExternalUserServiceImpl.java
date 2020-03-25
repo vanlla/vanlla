@@ -64,7 +64,7 @@ public class ExternalUserServiceImpl extends ServiceImpl<ExternalUserMapper, Ext
             //保存外部用户信息
             this.baseMapper.insert(externalUser);
         } else {
-            userEntity = userService.findByUserId(existUser.getUserId());
+            userEntity = userService.findByUserId(existUser.getInternalUserId());
         }
 
         return userEntity;

@@ -35,7 +35,7 @@
     </select>
 
     <select id="findExternalUser" resultType="com.github.vanlla.system.entity.ExternalUserEntity">
-        select * from tb_external_user where  internal_user_id = #{userId} and organization = #{organization}
+        select * from tb_external_user where  user_id = #{userId} and organization = #{organization}
     </select>
 
 </mapper>

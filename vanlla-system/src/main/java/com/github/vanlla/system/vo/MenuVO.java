@@ -20,12 +20,12 @@ public class MenuVO {
      * 菜单编号
      */
     @ApiModelProperty(value = "菜单编号", example = "1")
-    private Long menuId;
+    private String menuId;
     /**
      * 父菜单ID
      */
     @ApiModelProperty(value = "父菜单ID", example = "1")
-    private Long parentId;
+    private String parentId;
 
     /**
      * 父菜单名称

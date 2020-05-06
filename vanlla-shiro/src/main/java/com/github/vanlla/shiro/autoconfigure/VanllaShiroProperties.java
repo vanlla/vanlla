@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * shiro 免登录路径
  *
- * @author Yuan Xianxian
+ * @author Vanlla
  * @since 1.0
  */
 

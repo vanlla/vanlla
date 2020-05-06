@@ -10,6 +10,7 @@ import org.quartz.JobListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -29,6 +30,9 @@ public class DefaultJobListener implements JobListener {
 
     @Autowired
     private IQuartzJobService quartzJobService;
+
+    @Value("${vanlla.job.enableSuccessLog:true}")
+    private boolean enableSuccessLog;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultJobListener.class);
 
@@ -78,6 +82,9 @@ public class DefaultJobListener implements JobListener {
         this.updateJobStatus(jobId, 0);
         //正常执行暂时不开启日志
         if (e != null) {
+            quartzJobLogService.save(log);
+        }else if (enableSuccessLog){
+            //没有异常，当开启了成功保存日志才执行
             quartzJobLogService.save(log);
         }
     }

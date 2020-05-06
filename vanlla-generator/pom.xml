@@ -5,7 +5,7 @@
     <parent>
         <artifactId>vanlla-dependencies</artifactId>
         <groupId>com.github.vanlla</groupId>
-       <version>1.0.7</version>
+       <version>1.0.8</version>
         <relativePath>../vanlla-dependencies/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-core</artifactId>
-           <version>1.0.7</version>
+           <version>1.0.8</version>
         </dependency>
         <dependency>
             <artifactId>velocity</artifactId>

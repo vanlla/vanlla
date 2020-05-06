@@ -123,6 +123,8 @@ public class LoginController extends BaseRestController {
     @PostMapping("/user/logout")
     @ResponseBody
     public Object logout() {
+        //登出系统
+        ShiroUtils.logout();
         return "success";
     }
 
@@ -140,7 +142,6 @@ public class LoginController extends BaseRestController {
             paramType = "query"
     )
     public void captcha(HttpServletRequest request, HttpServletResponse response, String uuid) throws IOException {
-        request.getSession().setAttribute("userName", "ivan");
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
         BufferedImage image = this.captchaService.getCaptcha(uuid);

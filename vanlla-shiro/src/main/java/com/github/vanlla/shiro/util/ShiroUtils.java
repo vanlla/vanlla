@@ -55,4 +55,11 @@ public class ShiroUtils {
             return kaptcha.toString();
         }
     }
+
+    /**
+     * 登出系统
+     */
+    public static void logout(){
+        SecurityUtils.getSubject().logout();
+    }
 }

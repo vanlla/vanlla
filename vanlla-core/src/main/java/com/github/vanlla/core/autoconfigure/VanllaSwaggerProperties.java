@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Swagger扫描的包路径
  *
- * @author Yuan xianxian
+ * @author Vanlla
  * @since 1.0
  */
 @Data

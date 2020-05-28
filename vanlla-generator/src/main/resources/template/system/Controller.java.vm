@@ -1,25 +1,19 @@
 package ${package}.${moduleName}.controller;
 
-import ${mainPath}.util.PageUtils;
-import mobi.xianxian.iblog.component.common.web.BaseRestController;
+import ${mainPath}.core.util.PageUtils;
+import com.github.vanlla.core.web.BaseRestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
-import mobi.xianxian.iblog.component.common.validator.group.AddGroup;
-import mobi.xianxian.iblog.component.common.validator.group.UpdateGroup;
 import ${package}.${moduleName}.entity.${className}Entity;
 import ${package}.${moduleName}.service.I${className}Service;
 import io.swagger.annotations.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 #if(${assertInfo.hasBigDecimalInSearch})
 import java.math.BigDecimal;
-#end
-#if(${assertInfo.hasDateInSearch})
-import java.util.Date;
 #end
 import java.util.Arrays;
 import java.util.Map;
@@ -28,7 +22,6 @@ import java.util.Map;
  * ${comments}
  *
  * @author ${author}
- * @email ${email}
  * @date ${datetime}
  */
 @Api(tags = "${comments}")
@@ -81,7 +74,7 @@ public class ${className}Controller extends BaseRestController {
     @PostMapping("/save")
     @RequiresPermissions("${moduleName}:${pathName}:save")
     @ApiOperation("保存${comments}")
-    public ${className}Entity save(@Validated(AddGroup.class) @RequestBody ${className}Entity ${classname}){
+    public ${className}Entity save(@RequestBody ${className}Entity ${classname}){
         ${classname}Service.save(${classname});
 
         return ${classname};
@@ -93,7 +86,7 @@ public class ${className}Controller extends BaseRestController {
     @PutMapping("/update")
     @RequiresPermissions("${moduleName}:${pathName}:update")
     @ApiOperation("修改${comments}")
-    public ${className}Entity update(@Validated(UpdateGroup.class) @RequestBody ${className}Entity ${classname}){
+    public ${className}Entity update(@RequestBody ${className}Entity ${classname}){
 		${classname}Service.updateById(${classname});
 
         return ${classname};

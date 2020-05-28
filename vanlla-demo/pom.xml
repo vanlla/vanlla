@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.vanlla</groupId>
     <artifactId>vanlla-demo</artifactId>
-   <version>1.0.8</version>
+    <version>1.0.8</version>
     <packaging>jar</packaging>
 
     <name>vanlla-demo</name>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.github.vanlla</groupId>
             <artifactId>vanlla-spring-boot-starter</artifactId>
-           <version>1.0.8</version>
+            <version>1.0.8</version>
             <!-- 打包的时候排除掉generator -->
             <exclusions>
                 <exclusion>

@@ -72,16 +72,17 @@ public class DefaultJobListener implements JobListener {
     public void jobWasExecuted(JobExecutionContext jobExecutionContext, JobExecutionException e) {
 
         Serializable jobId = (Serializable) jobExecutionContext.getJobDetail().getJobDataMap().get("pk");
-        Integer result = e == null ? 1 : 0;
+        String eDetail = jobExecutionContext.getJobDetail().getJobDataMap().getString("exception");
+        Integer result = eDetail == null ? 1 : 0;
         QuartzJobLogEntity log = new QuartzJobLogEntity();
         log.setStartTime(jobExecutionContext.getFireTime());
         log.setCompleteTime(new Date());
         log.setJobId((Integer) jobId);
         log.setResult(result);
-        log.setException(e == null ? null : jobExecutionContext.getJobDetail().getJobDataMap().getString("exception"));
+        log.setException(eDetail);
         this.updateJobStatus(jobId, 0);
         //正常执行暂时不开启日志
-        if (e != null) {
+        if (eDetail != null) {
             quartzJobLogService.save(log);
         }else if (enableSuccessLog){
             //没有异常，当开启了成功保存日志才执行

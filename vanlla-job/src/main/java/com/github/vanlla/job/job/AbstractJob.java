@@ -27,7 +27,6 @@ public abstract class AbstractJob implements Job {
         } catch (Exception e) {
             LOGGER.error(jobExecutionContext.getJobDetail().getKey().getName() + "，运行出现异常，请查看定时任务日志", e);
             jobExecutionContext.getJobDetail().getJobDataMap().put("exception", getExcetionDetail(e));
-            throw new JobExecutionException(jobExecutionContext.getJobDetail().getKey().getName() + "，运行出现异常，请查看定时任务日志", e);
         }
     }
 

@@ -45,7 +45,7 @@
         <mybatis-plus-version>3.3.0</mybatis-plus-version>
         <mysql.version>6.0.6</mysql.version>
         <fastjson.version>1.2.62</fastjson.version>
-        <shiro.version>1.4.2</shiro.version>
+        <shiro.version>1.7.1</shiro.version>
         <hutool.version>5.0.6</hutool.version>
         <apollo.version>1.1.1</apollo.version>
         <kaptcha.version>0.0.9</kaptcha.version>

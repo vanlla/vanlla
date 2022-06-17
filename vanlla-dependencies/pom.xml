@@ -44,7 +44,7 @@
         <mybatis-starter-version>2.1.1</mybatis-starter-version>
         <mybatis-plus-version>3.3.0</mybatis-plus-version>
         <mysql.version>6.0.6</mysql.version>
-        <fastjson.version>1.2.62</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <shiro.version>1.4.2</shiro.version>
         <hutool.version>5.0.6</hutool.version>
         <apollo.version>1.1.1</apollo.version>
